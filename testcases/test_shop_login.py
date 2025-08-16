@@ -19,16 +19,16 @@ def test_login(driver):
     # 1. 访问项目地址
     driver.get("http://116.62.63.211/shop/")
     # 2. 点击登录按钮
-    driver.find_element(By.XPATH, "/html/body/div[6]/div/div[1]/div[2]/a[1]").click()
+    driver.find_element(By.XPATH, "//a[text()='登录']").click()
     # 3. 断言：当前页面 == 登录页面
     url = driver.current_url
     assert url == "http://116.62.63.211/shop/user/loginInfo.html"
     # 4. 输入账号
-    driver.find_element(By.XPATH, "/html/body/div[4]/div/div[2]/div[2]/div/div/div[1]/form/div[1]/input").send_keys("ltqiu251")
+    driver.find_element(By.XPATH, "//input[@placeholder='请输入用户名/手机/邮箱']").send_keys("ltqiu251")
     # 5. 输入密码
-    driver.find_element(By.XPATH, "/html/body/div[4]/div/div[2]/div[2]/div/div/div[1]/form/div[2]/div/input").send_keys("123456")
+    driver.find_element(By.XPATH, "//input[@placeholder='请输入登录密码']").send_keys("123456")
     # 6. 点击登录按钮
-    driver.find_element(By.XPATH, "/html/body/div[4]/div/div[2]/div[2]/div/div/div[1]/form/div[3]/button").click()
+    driver.find_element(By.XPATH, "//button[text()='登录']").click()
 
     # 由于代码执行速度过快，元素还未加载出来，所以定位不到 => 解决方法：使用等待让元素出现后再操作
     # 隐式等待
@@ -46,10 +46,10 @@ def test_login(driver):
     wait = WebDriverWait(driver, 10)
 
     # 可以继续优化代码，使用匿名函数lambda
-    wait.until(lambda d: driver.find_element(By.XPATH, "/html/body/div[10]/div/p"))
+    wait.until(lambda d: driver.find_element(By.XPATH, "//p[@class='prompt-msg']"))
 
     # 7. 断言: 系统提示信息（实际结果）== 登录成功（预期结果）
-    msg = driver.find_element(By.XPATH, "/html/body/div[10]/div/p").text
+    msg = driver.find_element(By.XPATH, "//p[@class='prompt-msg']").text
     print(msg)
     # 获取实际结果之后断言预期结果
     assert msg == "登录成功"
