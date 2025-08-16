@@ -35,16 +35,18 @@ def test_login(driver):
     # driver.implicitly_wait(10) # 使用隐式等待，在十秒钟之内不断地去定位实际结果元素
 
     # 显式等待
-    def func(d):
-        """自定义显式等待函数必须满足以下要求:
-            1. 必须接收参数: 一定要有一个形参
-            2. 返回值必须为真（等待结束），返回值为假（继续等待）
-        """
-        driver.find_element(By.XPATH, "/html/body/div[10]/div/p")
-        return True
+    # def func(d):
+    #     """自定义显式等待函数必须满足以下要求:
+    #         1. 必须接收参数: 一定要有一个形参
+    #         2. 返回值必须为真（等待结束），返回值为假（继续等待）
+    #     """
+    #     driver.find_element(By.XPATH, "/html/body/div[10]/div/p")
+    #     return True
 
     wait = WebDriverWait(driver, 10)
-    wait.until(func)
+
+    # 可以继续优化代码，使用匿名函数lambda
+    wait.until(lambda d: driver.find_element(By.XPATH, "/html/body/div[10]/div/p"))
 
     # 7. 断言: 系统提示信息（实际结果）== 登录成功（预期结果）
     msg = driver.find_element(By.XPATH, "/html/body/div[10]/div/p").text
