@@ -21,8 +21,11 @@ def test_login(driver):
     # 2. 点击登录按钮
     driver.find_element(By.XPATH, "//a[text()='登录']").click()
     # 3. 断言：当前页面 == 登录页面
-    url = driver.current_url
-    assert url == "http://116.62.63.211/shop/user/loginInfo.html"
+    # 修复bug: 得到的实际url有时包含大写字母，有时包含小写字母
+    # expected_url和actual_url都集体小写
+    actual_url = driver.current_url.lower()
+    expected_url = "http://116.62.63.211/shop/user/loginInfo.html".lower()
+    assert actual_url == expected_url
     # 4. 输入账号
     driver.find_element(By.XPATH, "//input[@placeholder='请输入用户名/手机/邮箱']").send_keys("ltqiu251")
     # 5. 输入密码
