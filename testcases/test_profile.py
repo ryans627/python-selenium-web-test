@@ -1,3 +1,4 @@
+import os.path
 import time
 
 import pytest
@@ -12,8 +13,8 @@ from commons.funcs import login
 def driver():
     d = webdriver.Chrome()
     d.maximize_window()
-    d.implicitly_wait(10)
-    msg = login(d, 'beifan_1212', 'beifan_1212')
+    d.implicitly_wait(15)
+    msg = login(d, 'salewond', '123456')
     assert msg == "登录成功"
     yield d
     d.quit()
@@ -51,3 +52,37 @@ class TestProfile:
 
         msg = driver.find_element(By.XPATH, "//p[@class='prompt-msg']").text
         assert msg == "编辑成功"
+
+    def test_user_avatar(self, driver):
+        # 进入个人中心
+        driver.get("http://116.62.63.211/shop/user/index.html")
+        # 点击“修改头像”按钮
+        driver.find_element(By.XPATH, "//a[contains(text(),'修改头像')]").click()
+        image_path = os.path.abspath("resources/wuyanzu.jpg")
+        print(image_path)
+        # 点击“选择图片”按钮上传图片
+        driver.find_element(By.XPATH, "//input[@type='file']").send_keys(image_path)
+        time.sleep(1)
+        # 点击“确定上传”按钮
+        driver.find_element(By.XPATH, "//button[text()='确认上传']").click()
+        # 断言：上传成功
+        # 显式等待
+        wait = WebDriverWait(driver, 10)
+        # 使用匿名函数lambda
+        wait.until(lambda d: driver.find_element(By.XPATH, "//p[@class='prompt-msg']"))
+
+        msg = driver.find_element(By.XPATH, "//p[@class='prompt-msg']").text
+        assert msg == "上传成功"
+
+    def test_address(self, driver):
+        # 进入个人中心
+        driver.get("http://116.62.63.211/shop/user/index.html")
+        # 点击“我的地址”按钮
+        driver.find_element(By.XPATH, "//a[contains(text(),'我的地址')]").click()
+        # 获取地址名字
+        el_1 = driver.find_element(By.XPATH, "//span[@class='user']")
+        el_2 = driver.find_element(By.XPATH, "//span[@class='phone']")
+        el_3 = driver.find_element(By.XPATH, "//span[@class='province']")
+        assert el_1.text == "张三"
+        assert el_2.text == "1111111111"
+        assert el_3.text == "北京市"
