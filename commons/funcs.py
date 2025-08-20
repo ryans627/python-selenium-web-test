@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def login(driver, username, password):
     driver.get("http://116.62.63.211/shop/user/loginInfo.html")
@@ -12,7 +13,7 @@ def login(driver, username, password):
     # 显式等待
     wait = WebDriverWait(driver, 10)
     # 可以继续优化代码，使用匿名函数lambda
-    wait.until(lambda d: driver.find_element(By.XPATH, "//p[@class='prompt-msg']"))
+    wait.until(EC.text_to_be_present_in_element((By.XPATH, "//p[@class='prompt-msg']"), "登录成功"))
 
     msg = driver.find_element(By.XPATH, "//p[@class='prompt-msg']").text
     return msg
