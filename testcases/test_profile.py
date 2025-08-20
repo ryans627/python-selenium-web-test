@@ -9,7 +9,11 @@ from selenium.webdriver.support.wait import WebDriverWait
 from commons.funcs import login
 
 
-@pytest.fixture
+@pytest.fixture(scope='class')
+# 设置fixture为class级别
+# 类中所有的实例方法（用例）全部可以获取已登录状态fixture
+# 然后再执行脚本
+# 不需要每个用例调用一次登录
 def driver():
     d = webdriver.Chrome()
     d.maximize_window()
