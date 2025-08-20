@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -30,6 +32,8 @@ class TestProfile:
         nickname_input = driver.find_element(By.XPATH, "//input[@placeholder='昵称']")
         # 清空输入框的内容
         nickname_input.clear()
+        # 清空后会弹出消息框“昵称2～16个字符之间” => 解决方案：等它消失
+        time.sleep(5)
         # 输入新的内容
         nickname_input.send_keys("吴彦祖")
         # 选择性别
