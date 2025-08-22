@@ -17,7 +17,7 @@ from commons.funcs import login
 def driver():
     d = webdriver.Chrome()
     d.maximize_window()
-    d.implicitly_wait(15)
+    d.implicitly_wait(10)
     msg = login(d, 'salewond', '123456')
     assert msg == "登录成功"
     yield d
@@ -89,4 +89,54 @@ class TestProfile:
         el_3 = driver.find_element(By.XPATH, "//span[@class='province']")
         assert el_1.text == "张三"
         assert el_2.text == "1111111111"
-        assert el_3.text == "北京市"
+        assert el_3.text == "河北省"
+
+    def test_save_user_address(self, driver):
+        # 进入我的地址
+        driver.get("http://116.62.63.211/shop/useraddress/index.html")
+        # 点击新增地址按钮
+        driver.find_element(By.XPATH, "//button[@data-popup-title='新增地址']").click()
+        # 填写表单
+        # 由于页面中有iframe标签元素，是属于页面中的子页面结构
+        # 需要切换子页面之后再定位其中元素并操作
+        # 定位iframe元素 => 注意：iframe的id是动态变化的. 不可信. 要手写xpath, 而不能直接copy
+        # el = driver.find_element(By.XPATH, '//*[@id="am-modal-5wgn6"]/div/div[2]/iframe')
+        # 直接使用src去定位
+        el = driver.find_element(By.XPATH, "//iframe[@src='http://116.62.63.211/shop/useraddress/saveinfo.html']")
+        # 切换子页面
+        driver.switch_to.frame(el)
+        # 输入姓名
+        driver.find_element(By.XPATH, "//input[@placeholder='姓名']").send_keys("张三")
+        # 输入电话
+        driver.find_element(By.XPATH, "//input[@placeholder='电话']").send_keys("1111111111")
+        # 从选择框中选择省市区
+        # 选择省份
+        # 点击省份标签元素
+        driver.find_element(By.XPATH, "/html/body/div[1]/form/div[4]/div[1]/a/span").click()
+        # 点击具体下拉框中的省份元素: 点击河北省
+        driver.find_element(By.XPATH, "/html/body/div[1]/form/div[4]/div[1]/div/ul/li[4]").click()
+
+        # 点击城市下拉框
+        driver.find_element(By.XPATH, "/html/body/div[1]/form/div[4]/div[2]/a/span").click()
+        # 选择城市：石家庄
+        driver.find_element(By.XPATH, "/html/body/div[1]/form/div[4]/div[2]/div/ul/li[2]").click()
+
+        # 点击区县下拉框
+        driver.find_element(By.XPATH, "/html/body/div[1]/form/div[4]/div[3]/a/span").click()
+        # 选择区: 井阱县
+        driver.find_element(By.XPATH, "/html/body/div[1]/form/div[4]/div[3]/div/ul/li[2]").click()
+
+        # 输入详细地址
+        driver.find_element(By.XPATH, "//*[@id='form-address']").send_keys("第四胡同128号")
+
+        # 点击保存按钮
+        driver.find_element(By.XPATH, "//button[text()='保存']").click()
+
+        # 断言：操作成功
+        # 显式等待
+        wait = WebDriverWait(driver, 10)
+        # 使用匿名函数lambda
+        wait.until(lambda d: driver.find_element(By.XPATH, "//p[@class='prompt-msg']"))
+
+        msg = driver.find_element(By.XPATH, "//p[@class='prompt-msg']").text
+        assert msg == "操作成功"

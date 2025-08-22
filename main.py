@@ -1,3 +1,3 @@
 import pytest
 
-pytest.main(['-vs', 'testcases/test_profile.py'])
+pytest.main(['-vsk', 'test_profile.py'])
