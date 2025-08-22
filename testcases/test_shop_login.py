@@ -34,8 +34,8 @@ def test_login(driver):
     # 发送请求访问项目地址 => 通过LoginInfoPage的类属性url访问
     driver.get(LoginInfoPage.url)
     # 创建页面对象
-    loginPage = LoginInfoPage(driver)
+    login_page = LoginInfoPage(driver)
     # 调用实例方法执行用例步骤
-    msg = loginPage.login('beifan_1212','beifan_1212')
+    msg = login_page.login('beifan_1212','beifan_1212')
     # 断言 msg 提示信息
     assert msg == "登录成功"
