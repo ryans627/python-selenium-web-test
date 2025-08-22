@@ -8,6 +8,7 @@ from commons.login_page import LoginInfoPage
 # 前后置夹具
 @pytest.fixture()
 def driver():
+    # 实例化Chrome WebDriver对象
     d = webdriver.Chrome()
     d.maximize_window()
     yield d
@@ -31,6 +32,7 @@ def driver():
 #     assert msg == "登录成功"
 
 def test_login(driver):
+    # 使用PO模式组织测试用例
     # 发送请求访问项目地址 => 通过LoginInfoPage的类属性url访问
     driver.get(LoginInfoPage.url)
     # 创建页面对象
