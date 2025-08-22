@@ -62,7 +62,7 @@ class TestProfile:
         driver.get("http://116.62.63.211/shop/user/index.html")
         # 点击“修改头像”按钮
         driver.find_element(By.XPATH, "//a[contains(text(),'修改头像')]").click()
-        image_path = os.path.abspath("resources/wuyanzu.jpg")
+        image_path = os.path.abspath("resources/wuyanzu.png")
         print(image_path)
         # 点击“选择图片”按钮上传图片
         driver.find_element(By.XPATH, "//input[@type='file']").send_keys(image_path)
