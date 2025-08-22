@@ -1,3 +1,3 @@
 import pytest
 
-pytest.main(['-vsk', 'test_profile.py'])
+pytest.main(['-vsk', 'test_login'])
