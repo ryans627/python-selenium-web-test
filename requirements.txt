@@ -1,3 +1,5 @@
 selenium
 pytest
 pytest-playwright
+pytest-result-log
+allure-pytest

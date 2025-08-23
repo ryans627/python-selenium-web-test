@@ -1,7 +1,8 @@
+import logging
 import time
 
 from commons.base_page import BasePage
-
+logger = logging.getLogger('pom')
 
 class SaveInfoPage(BasePage):
     # 所有页面元素都定义为类属性
@@ -22,6 +23,7 @@ class SaveInfoPage(BasePage):
 
     # 将用例执行步骤封装成实例方法
     def submit(self, nickname: str, date: str):
+        logger.info(f"正在修改资料：{nickname}, {date}")
         self.find_element(self.edit_profile_btn).click()
         self.find_element(self.edit_btn).click()
         # 名字输入框
@@ -47,6 +49,7 @@ class UserAvatarPage(BasePage):
     upload_btn = "//button[text()='确认上传']"
 
     def update_avatar(self, path):
+        logger.info(f"正在上传图片, 地址为: {path}")
         self.find_element(self.edit_avatar_btn).click()
         self.find_element(self.select_image_btn).send_keys(path)
         time.sleep(1)
