@@ -2,6 +2,7 @@
 import logging
 import time
 
+import allure
 from selenium.webdriver.common.by import By
 
 from commons.base_page import BasePage
@@ -20,6 +21,9 @@ class UserAddressPage(BasePage):
         phone_txt = self.find_element(self.phone).text
         address_txt = self.find_element(self.address).text
         logger.info(f"获取到的信息内容为: {user_name_txt}, {phone_txt}, {address_txt}")
+        # 保存截图
+        png = self.driver.get_screenshot_as_png()
+        allure.attach(png, '获取信息')
         # 以tuple的形式返回
         return user_name_txt, phone_txt, address_txt
 
@@ -61,6 +65,10 @@ class SaveUserAddressPage(BasePage):
         self.find_element(self.county_option).click()
         logger.info("Inputing detailed address...")
         self.find_element(self.detailed_address_input).send_keys(detailed_address)
+        # 在提交之前保存截图
+        png = self.driver.get_screenshot_as_png()
+        allure.attach(png, '确认提交')
+
         self.find_element(self.save_btn).click()
         return self.get_message()
 
@@ -78,6 +86,9 @@ class DeleteAddressPage(BasePage):
         delete_btn = delete_btn_list[num]
         logger.info(f"Clicking delete button on index: {num}")
         delete_btn.click()
+        # 保存截图
+        png = self.driver.get_screenshot_as_png()
+        allure.attach(png, '准备删除地址')
         self.click_confirm_button()
         logger.info("Getting delete info...")
         return self.get_message()

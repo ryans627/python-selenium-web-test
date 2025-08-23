@@ -1,6 +1,8 @@
 import logging
 import time
 
+import allure
+
 from commons.base_page import BasePage
 logger = logging.getLogger('pom')
 
@@ -37,6 +39,9 @@ class SaveInfoPage(BasePage):
         self.find_element(self.gender_radio).click()
         # 选择日期
         self.find_element(self.calendar_input).send_keys(date)
+        # 保存截图
+        png = self.driver.get_screenshot_as_png()
+        allure.attach(png, '确认提交')
         # 点击确认按钮
         self.find_element(self.save_btn).click()
         # 返回实际结果
@@ -54,4 +59,7 @@ class UserAvatarPage(BasePage):
         self.find_element(self.select_image_btn).send_keys(path)
         time.sleep(1)
         self.find_element(self.upload_btn).click()
+        # 保存截图
+        png = self.driver.get_screenshot_as_png()
+        allure.attach(png, '上传图片')
         return self.get_message()

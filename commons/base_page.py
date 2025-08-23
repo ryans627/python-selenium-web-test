@@ -1,5 +1,6 @@
 import logging
 
+import allure
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -30,6 +31,9 @@ class BasePage:
         self.wait.until(lambda d: d.find_element(By.XPATH, "//p[@class='prompt-msg']").text)
         msg = self.find_element("//p[@class='prompt-msg']").text
         logger.info(f'System notification message: {msg}')
+        # 保存截图
+        png = self.driver.get_screenshot_as_png()
+        allure.attach(png, '系统提示信息')
         return msg
 
     # 点击取消按钮
