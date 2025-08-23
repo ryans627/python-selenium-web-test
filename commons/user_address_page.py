@@ -1,6 +1,8 @@
 # 定义用户地址页面类
 import time
 
+from selenium.webdriver.common.by import By
+
 from commons.base_page import BasePage
 
 
@@ -17,6 +19,7 @@ class UserAddressPage(BasePage):
         address_txt = self.find_element(self.address).text
         # 以tuple的形式返回
         return (user_name_txt, phone_txt, address_txt)
+
 
 class SaveUserAddressPage(BasePage):
     url = "http://116.62.63.211/shop/useraddress/index.html"
@@ -56,4 +59,21 @@ class SaveUserAddressPage(BasePage):
 
         self.find_element(self.detailed_address_input).send_keys(detailed_address)
         self.find_element(self.save_btn).click()
+        return self.get_message()
+
+class DeleteAddressPage(BasePage):
+    url = "http://116.62.63.211/shop/useraddress/index.html"
+    # 注意：因为有多个地址，即多个删除按钮，通过以下这个xpath会得到多个搜索结果
+    delete_btn_xpath = "//a[contains(text(), '删除')]"
+
+    def delete_address(self, num: int):
+        """
+
+        :param num: starts from 0
+        :return:
+        """
+        delete_btn_list = self.driver.find_elements(By.XPATH, self.delete_btn_xpath) # 返回一个列表
+        delete_btn = delete_btn_list[num]
+        delete_btn.click()
+        self.click_confirm_button()
         return self.get_message()

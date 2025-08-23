@@ -1,15 +1,8 @@
-import os.path
-import time
-
 import pytest
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-
-from commons.funcs import login
 from commons.login_page import LoginInfoPage
 from commons.profile_page import SaveInfoPage, UserAvatarPage
-from commons.user_address_page import UserAddressPage, SaveUserAddressPage
+from commons.user_address_page import UserAddressPage, SaveUserAddressPage, DeleteAddressPage
 
 
 @pytest.fixture(scope='class')
@@ -43,10 +36,10 @@ class TestProfile:
         driver.get(UserAvatarPage.url)
         user_avatar_page = UserAvatarPage(driver)
         msg = user_avatar_page.update_avatar(
-            "/Users/ryanshang/Dev/mashang/python_selenium_web_tests/resources/liuyifei.jpg")
+            "/Users/ryanshang/Dev/mashang/python_selenium_web_tests/resources/wuyanzu.png")
         assert msg == "上传成功"
 
-    def test_address(self, driver):
+    def test_verify_address(self, driver):
         driver.get(UserAddressPage.url)
         user_address_page = UserAddressPage(driver)
         info = user_address_page.get_info()
@@ -55,5 +48,11 @@ class TestProfile:
     def test_save_user_address(self, driver):
         driver.get(SaveUserAddressPage.url)
         save_user_address_page = SaveUserAddressPage(driver)
-        msg = save_user_address_page.add_address("张三", "1111111111","第四胡同128号")
+        msg = save_user_address_page.add_address("张三", "1111111111","第五胡同129号")
         assert msg == "操作成功"
+
+    def test_delete_user_address(self, driver):
+        driver.get(DeleteAddressPage.url)
+        delete_address_page = DeleteAddressPage(driver)
+        msg = delete_address_page.delete_address(0) # 定位多个元素，通过索引提取第0个元素（即首个），点击删除
+        assert msg == "删除成功"
