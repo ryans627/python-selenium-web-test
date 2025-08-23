@@ -8,7 +8,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 from commons.funcs import login
 from commons.login_page import LoginInfoPage
-from commons.profile_page import SaveInfoPage
+from commons.profile_page import SaveInfoPage, UserAvatarPage
 
 
 @pytest.fixture(scope='class')
@@ -39,24 +39,9 @@ class TestProfile:
         assert msg == "编辑成功"
 
     def test_user_avatar(self, driver):
-        # 进入个人中心
-        driver.get("http://116.62.63.211/shop/user/index.html")
-        # 点击“修改头像”按钮
-        driver.find_element(By.XPATH, "//a[contains(text(),'修改头像')]").click()
-        image_path = os.path.abspath("resources/wuyanzu.png")
-        print(image_path)
-        # 点击“选择图片”按钮上传图片
-        driver.find_element(By.XPATH, "//input[@type='file']").send_keys(image_path)
-        time.sleep(1)
-        # 点击“确定上传”按钮
-        driver.find_element(By.XPATH, "//button[text()='确认上传']").click()
-        # 断言：上传成功
-        # 显式等待
-        wait = WebDriverWait(driver, 10)
-        # 使用匿名函数lambda
-        wait.until(lambda d: driver.find_element(By.XPATH, "//p[@class='prompt-msg']"))
-
-        msg = driver.find_element(By.XPATH, "//p[@class='prompt-msg']").text
+        driver.get(UserAvatarPage.url)
+        user_avatar_page = UserAvatarPage(driver)
+        msg = user_avatar_page.update_avatar("/Users/ryanshang/Dev/mashang/python_selenium_web_tests/resources/liuyifei.jpg")
         assert msg == "上传成功"
 
     def test_address(self, driver):

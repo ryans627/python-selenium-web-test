@@ -39,3 +39,16 @@ class SaveInfoPage(BasePage):
         self.find_element(self.save_btn).click()
         # 返回实际结果
         return self.get_message()
+
+class UserAvatarPage(BasePage):
+    url = "http://116.62.63.211/shop/user/index.html"
+    edit_avatar_btn = "//a[contains(text(),'修改头像')]"
+    select_image_btn = "//input[@type='file']"
+    upload_btn = "//button[text()='确认上传']"
+
+    def update_avatar(self, path):
+        self.find_element(self.edit_avatar_btn).click()
+        self.find_element(self.select_image_btn).send_keys(path)
+        time.sleep(1)
+        self.find_element(self.upload_btn).click()
+        return self.get_message()
