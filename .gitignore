@@ -24,3 +24,7 @@ venv/
 dist/
 build/
 *.egg-info/
+
+# allure
+allure_result/
+report/
