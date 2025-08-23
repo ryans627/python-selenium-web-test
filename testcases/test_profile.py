@@ -9,6 +9,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 from commons.funcs import login
 from commons.login_page import LoginInfoPage
 from commons.profile_page import SaveInfoPage, UserAvatarPage
+from commons.user_address_page import UserAddressPage
 
 
 @pytest.fixture(scope='class')
@@ -41,21 +42,15 @@ class TestProfile:
     def test_user_avatar(self, driver):
         driver.get(UserAvatarPage.url)
         user_avatar_page = UserAvatarPage(driver)
-        msg = user_avatar_page.update_avatar("/Users/ryanshang/Dev/mashang/python_selenium_web_tests/resources/liuyifei.jpg")
+        msg = user_avatar_page.update_avatar(
+            "/Users/ryanshang/Dev/mashang/python_selenium_web_tests/resources/liuyifei.jpg")
         assert msg == "上传成功"
 
     def test_address(self, driver):
-        # 进入个人中心
-        driver.get("http://116.62.63.211/shop/user/index.html")
-        # 点击“我的地址”按钮
-        driver.find_element(By.XPATH, "//a[contains(text(),'我的地址')]").click()
-        # 获取地址名字
-        el_1 = driver.find_element(By.XPATH, "//span[@class='user']")
-        el_2 = driver.find_element(By.XPATH, "//span[@class='phone']")
-        el_3 = driver.find_element(By.XPATH, "//span[@class='province']")
-        assert el_1.text == "张三"
-        assert el_2.text == "1111111111"
-        assert el_3.text == "河北省"
+        driver.get(UserAddressPage.url)
+        user_address_page = UserAddressPage(driver)
+        info = user_address_page.get_info()
+        assert info == ("张三", "1111111111", "河北省")
 
     def test_save_user_address(self, driver):
         # 进入我的地址
