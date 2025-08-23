@@ -68,7 +68,6 @@ class DeleteAddressPage(BasePage):
 
     def delete_address(self, num: int):
         """
-
         :param num: starts from 0
         :return:
         """
