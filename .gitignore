@@ -28,3 +28,4 @@ build/
 # allure
 allure-results/
 report/
+allure-report/
