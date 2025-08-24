@@ -26,5 +26,5 @@ build/
 *.egg-info/
 
 # allure
-allure_result/
+allure-results/
 report/
