@@ -63,6 +63,7 @@ class SaveUserAddressPage(BasePage):
         logger.info("Selecting county...")
         self.find_element(self.county_btn).click()
         self.find_element(self.county_option).click()
+        time.sleep(2)
         logger.info("Inputing detailed address...")
         self.find_element(self.detailed_address_input).send_keys(detailed_address)
         # 在提交之前保存截图
